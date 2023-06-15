@@ -8,6 +8,7 @@ using CsvHelper;
 using System.Globalization;
 using BetonarkaDL.Models;
 using CsvHelper.Configuration;
+using System.Configuration;
 
 namespace BetonarkaDL
 {
@@ -16,7 +17,9 @@ namespace BetonarkaDL
         public const string dateFormat = "dd-MM-yyyy";
         public const string dateTimeFormat = "HH:mm:ss dd-MM-yyyy";
         public const string dateTimeFormatCsv = "HH:mm:ss_dd-MM-yyyy";
-        public static readonly string dataPath = AppDomain.CurrentDomain.BaseDirectory + "\\data";
+        public static readonly string dataPath = ConfigurationManager.AppSettings["cestaData"].Length > 0 
+                                                ? ConfigurationManager.AppSettings["cestaData"]
+                                                : AppDomain.CurrentDomain.BaseDirectory + "\\data";
         public static string lastTimeMiesacky;
         public static string lastTimePalety;
 

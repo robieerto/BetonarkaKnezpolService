@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
@@ -13,9 +14,10 @@ namespace BetonarkaDL
         //public static string ipAddr = "213.215.84.85";
         //public static string ipAddr = "192.168.1.201"; // Knezpole
         //public static int ipPort = 8881;
-        public static string ipAddrMiesacka1 = "192.168.1.100";
-        public static string ipAddrMiesacka2 = "192.168.1.201";
-        public static int ipPort = 502;
+        public static string ipAddrMiesacka1 = ConfigurationManager.AppSettings["ipAdresaBetonarka1"];
+        public static string ipAddrMiesacka2 = ConfigurationManager.AppSettings["ipAdresaBetonarka2"];
+        public static int portBetonarka1 = int.Parse(ConfigurationManager.AppSettings["portBetonarka1"]);
+        public static int portBetonarka2 = int.Parse(ConfigurationManager.AppSettings["portBetonarka2"]);
         public static byte slaveId = 0;
 
         public static List<double> MasterReadDoubleWords(ushort startAddress, ushort numDoubleWords, int miesacka)
@@ -23,19 +25,22 @@ namespace BetonarkaDL
             try
             {
                 string ipAddr;
+                int port;
                 if (miesacka == 1)
 				{
                     ipAddr = ipAddrMiesacka1;
-				}
+                    port = portBetonarka1;
+                }
                 else if (miesacka == 2)
 				{
                     ipAddr = ipAddrMiesacka2;
+                    port = portBetonarka2;
 				}
                 else
 				{
                     return null;
 				}
-                using (TcpClient client = new TcpClient(ipAddr, ipPort))
+                using (TcpClient client = new TcpClient(ipAddr, port))
                 {
                     var factory = new ModbusFactory();
                     IModbusMaster master = factory.CreateMaster(client);

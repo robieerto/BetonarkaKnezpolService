@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,14 +10,11 @@ namespace BetonarkaDL
 {
     public static class ProfinetS7
     {
-        //private static string ipAddr = "213.215.84.85";
-        //private static string ipAddr = "192.168.1.205"; // Knezpole
-        //private static int ipPort = 8901;
-        private static string ipAddr = "192.168.1.205";
-        private static int ipPort = 102;
+        private static string ipAddr = ConfigurationManager.AppSettings["ipAdresaPalety"];
+        private static int ipPort = int.Parse(ConfigurationManager.AppSettings["portPalety"]);
         private static short rack = 0;
         private static short slot = 1;
-        private static int db = 2110;
+        //private static int db = 2110;
         private static Plc plc = new Plc(CpuType.S71200, ipAddr, ipPort, rack, slot);
 
         public static bool isConnected = true;
