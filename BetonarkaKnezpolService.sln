@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32002.261
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetonarkaDL", "ModbusProfinetDL\BetonarkaDL.csproj", "{CA5B80C6-2CD7-4CE4-BF55-EF57CDB46BE8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetonarkaKnezpolService", "BetonarkaKnezpolService\BetonarkaKnezpolService.csproj", "{3D371373-794E-44E4-A44B-86A27411B2D4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CA5B80C6-2CD7-4CE4-BF55-EF57CDB46BE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA5B80C6-2CD7-4CE4-BF55-EF57CDB46BE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA5B80C6-2CD7-4CE4-BF55-EF57CDB46BE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA5B80C6-2CD7-4CE4-BF55-EF57CDB46BE8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D371373-794E-44E4-A44B-86A27411B2D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D371373-794E-44E4-A44B-86A27411B2D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D371373-794E-44E4-A44B-86A27411B2D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D371373-794E-44E4-A44B-86A27411B2D4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D49186DD-F0B2-4A74-A17A-A60D497DC453}
+	EndGlobalSection
+EndGlobal
