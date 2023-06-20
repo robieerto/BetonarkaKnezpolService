@@ -55,8 +55,13 @@ namespace BetonarkaDL
             }
         }
 
-        public static void SaveMiesacky(List<double> data)
+        public static void SaveMiesacky(List<double> data, bool successMiesacka1, bool successMiesacka2)
         {
+            if (!successMiesacka1 && !successMiesacka2)
+			{
+                return;
+			}
+
             var currDateTime = DateTime.Now;
             lastTimeMiesacky = currDateTime.ToString(dateTimeFormat);
             var savePath = GetSavePath(currDateTime);
@@ -65,34 +70,54 @@ namespace BetonarkaDL
                 Directory.CreateDirectory(savePath);
             }
 
-            var records = new List<MiesackyModel>
-            {
-                new MiesackyModel
+            int baseIdx = 0;
+
+            if (successMiesacka1)
+			{
+                var records = new List<MiesackyModel1>
                 {
-                    Cas = currDateTime.ToString(dateTimeFormatCsv),
-                    Miesacka1VelkaCement = data[0],
-                    Miesacka1VelkaPopol = data[1],
+                    new MiesackyModel1
+                    {
+                        Cas = currDateTime.ToString(dateTimeFormatCsv),
+                        Miesacka1VelkaCement = data[0],
+                        Miesacka1VelkaPopol = data[1],
+                    }
+                };
+                baseIdx += 2;
+
+                if (data.Count > 2)
+                {
+                    records[0].Miesacka1MalaCement = data[2];
+                    baseIdx++;
                 }
-            };
-            if (data.Count > 2)
-            {
-                records[0].Miesacka1MalaCement = data[2];
-            }
-            if (data.Count > 3)
-			{
-                records[0].Miesacka2VelkaCement = data[3];
-                records[0].Miesacka2VelkaPopol = data[4];
-                records[0].Miesacka2VelkaCement2 = data[5];
-            }
-            if (data.Count > 6)
-			{
-                records[0].Miesacka2MalaCement = data[6];
-                records[0].Miesacka2MalaBielyCement = data[7];
 
+                var filePath = $"{savePath}\\dataBetonarka1.csv";
+                SaveData(records, filePath);
             }
 
-            var filePath = $"{savePath}\\dataBetonarka.csv";
-            SaveData(records, filePath);
+            if (successMiesacka2)
+			{
+                var records = new List<MiesackyModel2>
+                {
+                    new MiesackyModel2
+                    {
+                        Cas = currDateTime.ToString(dateTimeFormatCsv),
+                        Miesacka2VelkaCement = data[0 + baseIdx],
+                        Miesacka2VelkaPopol = data[1 + baseIdx],
+                        Miesacka2VelkaCement2 = data[2 + baseIdx],
+                    }
+                };
+
+                if (data.Count > (3 + baseIdx))
+                {
+                    records[0].Miesacka2MalaCement = data[3 + baseIdx];
+                    records[0].Miesacka2MalaBielyCement = data[4 + baseIdx];
+
+                }
+
+                var filePath = $"{savePath}\\dataBetonarka2.csv";
+                SaveData(records, filePath);
+            }
         }
 
         public static void SavePalety(List<int> data)

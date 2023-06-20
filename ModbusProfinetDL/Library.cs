@@ -39,11 +39,26 @@ namespace BetonarkaDL
             }
         }
 
-        public static void WriteLastTimeModbus()
+        public static void WriteLastTimeModbus1()
         {
             try
             {
-                using (var sw = new StreamWriter(CsvLayer.dataPath + "\\betonarka.txt", false))
+                using (var sw = new StreamWriter(CsvLayer.dataPath + "\\betonarka1.txt", false))
+                {
+                    sw.WriteLine(DateTime.Now.ToString() + ": Posledne vycitane data");
+
+                }
+            }
+            catch
+            {
+            }
+        }
+
+        public static void WriteLastTimeModbus2()
+        {
+            try
+            {
+                using (var sw = new StreamWriter(CsvLayer.dataPath + "\\betonarka2.txt", false))
                 {
                     sw.WriteLine(DateTime.Now.ToString() + ": Posledne vycitane data");
 

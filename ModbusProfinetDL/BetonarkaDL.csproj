@@ -77,7 +77,8 @@
     <Compile Include="DataCommunication.cs" />
     <Compile Include="Library.cs" />
     <Compile Include="ModbusTCP.cs" />
-    <Compile Include="Models\MiesackyModel.cs" />
+    <Compile Include="Models\MiesackyModel2.cs" />
+    <Compile Include="Models\MiesackyModel1.cs" />
     <Compile Include="Models\PaletyModel.cs" />
     <Compile Include="ProfinetS7.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
