@@ -72,7 +72,7 @@ namespace BetonarkaDL
 
                     // check and save data
                     bool willSaveDataModbus = false;
-                    if (dataModbus != null && dataModbusLast != null)
+                    if (dataModbus.Count > 0 && dataModbusLast != null)
                     {
                         for (int i = 0; i < dataModbus.Count; i++)
                         {
