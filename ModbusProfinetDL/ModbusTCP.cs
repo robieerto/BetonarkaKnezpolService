@@ -19,6 +19,7 @@ namespace BetonarkaDL
         public static int portBetonarka1 = int.Parse(ConfigurationManager.AppSettings["portBetonarka1"]);
         public static int portBetonarka2 = int.Parse(ConfigurationManager.AppSettings["portBetonarka2"]);
         public static byte slaveId = 0;
+        public static bool connected = false;
 
         public static List<double> MasterReadDoubleWords(ushort startAddress, ushort numDoubleWords, int miesacka)
         {
@@ -54,6 +55,12 @@ namespace BetonarkaDL
                     {
                         double recvValue = registers[i] | (registers[i + 1] << 16);
                         recvData.Add(recvValue / 10); // 1 decimal value
+                    }
+
+                    if (!connected)
+					{
+                        connected = true;
+                        Library.WriteLog("Modbus pripojeny");
                     }
 
                     return recvData;

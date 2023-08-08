@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BetonarkaDL.Models;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -14,6 +15,8 @@ namespace BetonarkaDL
         static readonly bool vycitajBetonarka1 = int.Parse(ConfigurationManager.AppSettings["vycitajBetonarka1"]) != 0;
         static readonly bool vycitajBetonarka2 = int.Parse(ConfigurationManager.AppSettings["vycitajBetonarka2"]) != 0;
         static readonly bool vycitajPalety = int.Parse(ConfigurationManager.AppSettings["vycitajPalety"]) != 0;
+        static readonly string casUlozBetonarka = ConfigurationManager.AppSettings["casUlozBetonarka"];
+        static bool areDataSaved = false;
 
         // miesacky
         public static void ModbusTask()
@@ -70,22 +73,26 @@ namespace BetonarkaDL
                         }
                     }
 
-                    // check and save data
-                    bool willSaveDataModbus = false;
-                    if (dataModbus.Count > 0 && dataModbusLast != null)
-                    {
-                        for (int i = 0; i < dataModbus.Count; i++)
-                        {
-                            if (dataModbus[i] < dataModbusLast[i])
-                            {
-                                willSaveDataModbus = true;
-                                break;
-                            }
-                        }
+					// save log
+					CsvLayer.SaveMiesacky(dataModbus, successMiesacka1, successMiesacka2, true);
+
+					// check and save data
+					bool willSaveDataModbus = false;
+                    if (DateTime.Now.ToString("HH:mm") == casUlozBetonarka)
+					{
+                        if (!areDataSaved)
+						{
+                            willSaveDataModbus = true;
+						}
                     }
+                    else
+					{
+                        areDataSaved = false;
+					}
                     if (willSaveDataModbus)
                     {
                         CsvLayer.SaveMiesacky(dataModbus, successMiesacka1, successMiesacka2);
+                        areDataSaved = true;
                     }
                 }
                 catch (Exception ex)
@@ -93,7 +100,7 @@ namespace BetonarkaDL
                     Library.WriteLog(ex);
                 }
 
-                Task.Delay(2000);
+                Task.Delay(5000).Wait();
             }
         }
 
@@ -104,9 +111,12 @@ namespace BetonarkaDL
                 try
 				{
                     dataProfinet = ProfinetS7.ReadData();
+                    CsvLayer.SavePalety(dataProfinet, true);
                     if (dataProfinet != null)
                     {
                         Library.WriteLastTimeProfinet();
+                        // save log
+                        CsvLayer.SavePalety(dataProfinet, true);
                         if (ProfinetS7.readyToSave == true)
                         {
                             ProfinetS7.readyToSave = false;
@@ -119,7 +129,7 @@ namespace BetonarkaDL
                     Library.WriteLog(ex);
                 }
 
-                Task.Delay(2000);
+                Task.Delay(5000).Wait();
             }
         }
     }

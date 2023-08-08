@@ -33,11 +33,11 @@ namespace BetonarkaDL
             return savePath;
         }
 
-        public static void SaveData<T>(List<T> data, string filePath)
+        public static void SaveData<T>(List<T> data, string filePath, bool writeHeader = false)
         {
             var config = new CsvConfiguration(CultureInfo.CurrentCulture)
             {
-                HasHeaderRecord = (File.Exists(filePath) == false),
+                HasHeaderRecord = !File.Exists(filePath) || writeHeader,
             };
 
             try
@@ -55,7 +55,7 @@ namespace BetonarkaDL
             }
         }
 
-        public static void SaveMiesacky(List<double> data, bool successMiesacka1, bool successMiesacka2)
+        public static void SaveMiesacky(List<double> data, bool successMiesacka1, bool successMiesacka2, bool saveLog = false)
         {
             if (!successMiesacka1 && !successMiesacka2)
 			{
@@ -65,9 +65,12 @@ namespace BetonarkaDL
             var currDateTime = DateTime.Now;
             lastTimeMiesacky = currDateTime.ToString(dateTimeFormat);
             var savePath = GetSavePath(currDateTime);
-            if (!Directory.Exists(savePath))
-            {
-                Directory.CreateDirectory(savePath);
+            if (!saveLog)
+			{
+                if (!Directory.Exists(savePath))
+                {
+                    Directory.CreateDirectory(savePath);
+                }
             }
 
             int baseIdx = 0;
@@ -91,8 +94,8 @@ namespace BetonarkaDL
                     baseIdx++;
                 }
 
-                var filePath = $"{savePath}\\dataBetonarka1.csv";
-                SaveData(records, filePath);
+                var filePath = !saveLog ? $"{savePath}\\dataBetonarka1.csv" : (dataPath + "\\betonarka1.txt");
+                SaveData(records, filePath, saveLog);
             }
 
             if (successMiesacka2)
@@ -115,21 +118,23 @@ namespace BetonarkaDL
 
                 }
 
-                var filePath = $"{savePath}\\dataBetonarka2.csv";
-                SaveData(records, filePath);
+                var filePath = !saveLog ? $"{savePath}\\dataBetonarka2.csv" : (dataPath + "\\betonarka2.txt");
+                SaveData(records, filePath, saveLog);
             }
         }
 
-        public static void SavePalety(List<int> data)
+        public static void SavePalety(List<int> data, bool saveLog = false)
         {
             var currDateTime = DateTime.Now;
             lastTimePalety = currDateTime.ToString(dateTimeFormat);
             var savePath = GetSavePath(currDateTime);
-            if (!Directory.Exists(savePath))
+            if (!saveLog)
             {
-                Directory.CreateDirectory(savePath);
+                if (!Directory.Exists(savePath))
+                {
+                    Directory.CreateDirectory(savePath);
+                }
             }
-
             var records = new List<PaletyModel>
             {
                 new PaletyModel
@@ -144,8 +149,8 @@ namespace BetonarkaDL
                 }
             };
 
-            var filePath = $"{savePath}\\dataPalety.csv";
-            SaveData(records, filePath);
+            var filePath = !saveLog ? $"{savePath}\\dataPalety.csv" : (dataPath + "\\palety.txt");
+            SaveData(records, filePath, saveLog);
         }
     }
 }
